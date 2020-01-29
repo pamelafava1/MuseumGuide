@@ -65,6 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE && !TextUtils.isEmpty(mEditRadius.getText().toString().trim())) {
+                    Util.hideKeyboard(MapsActivity.this, v);
                     mMap.clear();
                     mRadius = Double.parseDouble(mEditRadius.getText().toString());
                     initMap();
@@ -92,7 +93,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 if (mLocationTracker.canGetLocaion()) {
                     if (!String.valueOf(mLocationTracker.getLatitude()).equals("0.0") && !String.valueOf(mLocationTracker.getLongitude()).equals("0.0")) {
                         mLastLocation = new LatLng(mLocationTracker.getLatitude(), mLocationTracker.getLongitude());
+
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mLastLocation, DEFAULT_ZOOM));
+                        mMap.addCircle(new CircleOptions()
+                                .radius(mRadius * 1000)
+                                .center(mLastLocation)
+                                .fillColor(0x1700CC3F)
+                                .strokeWidth(2f))
+                                .setStrokeColor(0x00CC3F);
+
+                        retrieveMuseums();
                     }
                 } else {
                     mLocationTracker.showSettingsAlertDialog();
@@ -106,13 +116,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     layoutParams.setMargins(0, 180, 180, 0);
                 }
 
-                mMap.addCircle(new CircleOptions()
-                        .radius(mRadius * 1000)
-                        .center(mLastLocation)
-                        .fillColor(0x3700CC3F)
-                        .strokeWidth(2f));
-
-                retrieveMuseums();
                 mMap.setOnMarkerClickListener(this);
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);

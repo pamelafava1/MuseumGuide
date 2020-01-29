@@ -5,6 +5,7 @@
     <string name="action_done">Fatto</string>
     <string name="action_logout">Esci</string>
     <string name="action_more">Altro</string>
+    <string name="back">Indietro</string>
     <string name="camera">Camera</string>
     <string name="cancel">Annulla</string>
     <string name="cancelled">Annullato</string>
@@ -31,15 +32,14 @@
     <string name="from">Da</string>
     <string name="gallery">Galleria</string>
     <string name="helper_text">Usa almeno sei caratteri.</string>
-    <string name="hint_description">Aggiungi una descrizione</string>
     <string name="hint_email">Email</string>
-    <string name="hint_location">Aggiungi luogo</string>
+    <string name="hint_museum_location">Aggiungi la posizione del museo</string>
     <string name="hint_radius">Aggiungi raggio</string>
     <string name="hint_museum_name">Aggiungi il nome del museo</string>
     <string name="hint_object_name">Aggiungi il nome dell\'oggetto</string>
     <string name="hint_password">Password</string>
+    <string name="hint_object_description">Aggiungi la descrizione dell\'oggetto</string>
     <string name="hint_room_name">Aggiungi il nome della sala</string>
-    <string name="hint_title">Aggiungi titolo</string>
     <string name="location_empty_error_message">È richiesta un luogo.</string>
     <string name="log_in">Accedi</string>
     <string name="log_in_message">Hai già un account? Accedi.</string>

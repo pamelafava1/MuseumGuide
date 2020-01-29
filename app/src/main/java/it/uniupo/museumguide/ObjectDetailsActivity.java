@@ -34,7 +34,7 @@ public class ObjectDetailsActivity extends AppCompatActivity implements TextToSp
     private Object mObject;
     private TextView mTextDescription;
     private ImageView mImageView;
-    private Button mBtnSpeech;
+    private Button mBtnSpeech, mBtnBack;
     private ProgressBar mProgressBar;
     private Uri mImageUri;
     private TextToSpeech mTextToSpeech;
@@ -51,6 +51,7 @@ public class ObjectDetailsActivity extends AppCompatActivity implements TextToSp
         mTextDescription = findViewById(R.id.object_description);
         mImageView = findViewById(R.id.object_image);
         mBtnSpeech = findViewById(R.id.btn_speech);
+        mBtnBack = findViewById(R.id.btn_back);
         mProgressBar = findViewById(R.id.progress_bar);
 
         idRoom = getIntent().getStringExtra(Constants.ID_ROOM);
@@ -59,14 +60,12 @@ public class ObjectDetailsActivity extends AppCompatActivity implements TextToSp
             if (!TextUtils.isEmpty(mObject.getDescription())) {
                 String description = getString(R.string.description) + "\n" + mObject.getDescription();
                 mTextDescription.setText(description);
-                mBtnSpeech.setVisibility(View.VISIBLE);
             } else {
                 mTextDescription.setText(getString(R.string.no_description_available));
             }
         }
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(mObject.getName());
         }
 
@@ -82,6 +81,12 @@ public class ObjectDetailsActivity extends AppCompatActivity implements TextToSp
             @Override
             public void onClick(View v) {
                 textToSpeak();
+            }
+        });
+        mBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
     }

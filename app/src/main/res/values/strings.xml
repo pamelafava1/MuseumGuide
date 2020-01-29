@@ -5,6 +5,7 @@
     <string name="action_done">Done</string>
     <string name="action_logout">Log out</string>
     <string name="action_more">More</string>
+    <string name="back">Back</string>
     <string name="camera">Camera</string>
     <string name="cancel">Cancel</string>
     <string name="cancelled">Cancelled</string>
@@ -31,16 +32,15 @@
     <string name="from">From</string>
     <string name="gallery">Gallery</string>
     <string name="helper_text">Use at least six characters.</string>
-    <string name="hint_description">Add description</string>
+    <string name="hint_object_description">Add object description</string>
     <string name="play">Play</string>
     <string name="hint_email">Email</string>
-    <string name="hint_location">Add location</string>
+    <string name="hint_museum_location">Add museum location</string>
     <string name="hint_radius">Add radius</string>
     <string name="hint_museum_name">Add museum name</string>
     <string name="hint_object_name">Add object name</string>
     <string name="hint_password">Password</string>
     <string name="hint_room_name">Add room name</string>
-    <string name="hint_title">Add title</string>
     <string name="location_empty_error_message">A location is required.</string>
     <string name="log_in">Log In</string>
     <string name="log_in_message">Already have an account? Log in.</string>
