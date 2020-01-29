@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "390294074178",
+    "firebase_url": "https://museum-guide-fada9.firebaseio.com",
+    "project_id": "museum-guide-fada9",
+    "storage_bucket": "museum-guide-fada9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390294074178:android:478e0c8c55ca87f5370edb",
+        "android_client_info": {
+          "package_name": "it.uniupo.museumguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390294074178-c977j89j41sl015at4kh2u624t495rnc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "it.uniupo.museumguide",
+            "certificate_hash": "494db236892e91c491de972f07788ab817896fd4"
+          }
+        },
+        {
+          "client_id": "390294074178-olm3amb9tpao2u01jrulcj4s79sj2f05.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKZX9lgsZKVJ2gAv8osD3c175AGxZOYfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390294074178-olm3amb9tpao2u01jrulcj4s79sj2f05.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
