@@ -4,6 +4,7 @@
     <string name="account_not_found">Non è stato trovato nessun account corrispondente a tali informazioni</string>
     <string name="action_done">Fatto</string>
     <string name="action_logout">Esci</string>
+    <string name="action_more">Altro</string>
     <string name="camera">Camera</string>
     <string name="cancel">Annulla</string>
     <string name="cancelled">Annullato</string>
@@ -64,7 +65,6 @@
     <string name="or">O</string>
     <string name="room_successfully_saved">Sala salvata correttamente</string>
     <string name="room_successfully_updated">Sala aggiornata con successo</string>
-    <string name="object_successfully_updated">Oggetto aggiornato correttamente</string>
     <string name="place_not_found">Non abbiamo trovato questo posto. Provane un altro.</string>
     <string name="room_list">Elenco delle stanze</string>
     <string name="saturday">Sabato</string>

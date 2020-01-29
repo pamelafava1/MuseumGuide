@@ -48,7 +48,7 @@ public class RoomListActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             mDataset = savedInstanceState.getParcelableArrayList(Constants.DATASET);
-            isUpdated = savedInstanceState.getBoolean(Constants.DATASET);
+            isUpdated = savedInstanceState.getBoolean(Constants.IS_UPDATED);
         } else {
             mDataset = new ArrayList<>();
             isUpdated = false;

@@ -22,7 +22,7 @@
                 android:id="@+id/object_image"
                 android:layout_width="400dp"
                 android:layout_height="400dp"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical"
                 android:contentDescription="@string/object_image"
                 android:scaleType="centerCrop" />
 

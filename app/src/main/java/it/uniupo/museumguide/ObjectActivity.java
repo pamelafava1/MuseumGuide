@@ -4,9 +4,11 @@ import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
@@ -23,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +44,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
@@ -48,6 +52,7 @@ import java.util.Locale;
 import it.uniupo.museumguide.models.Object;
 import it.uniupo.museumguide.util.Constants;
 import it.uniupo.museumguide.util.FirebaseUtil;
+import it.uniupo.museumguide.util.PhotoUtil;
 import it.uniupo.museumguide.util.Util;
 
 // Activity che permette di salvare, modificare o eliminare un oggetto
@@ -61,6 +66,7 @@ public class ObjectActivity extends AppCompatActivity {
     private Button mBtnSpeak;
     private ProgressBar mProgressBar;
     private Uri mImageUri;
+    private byte[] mImage;
     private static final int REQUEST_CAPTURE_IMAGE = 1000;
     private static final int REQUEST_GALLERY_IMAGE = 1001;
     private static final int REQUEST_SPEECH_INPUT = 1002;
@@ -110,11 +116,13 @@ public class ObjectActivity extends AppCompatActivity {
     }
 
     private void updateImageButton() {
-        Glide
-                .with(ObjectActivity.this)
-                .load(mImageUri)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(mBtnAddImage);
+        if (!this.isFinishing()) {
+            Glide
+                    .with(ObjectActivity.this)
+                    .load(mImageUri)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(mBtnAddImage);
+        }
     }
 
     private void downloadImage() {
@@ -201,12 +209,12 @@ public class ObjectActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CAPTURE_IMAGE:
-                    mBtnAddImage.setImageURI(mImageUri);
+                    handleResult();
                     break;
                 case REQUEST_GALLERY_IMAGE:
                     if(data != null) {
                         mImageUri = data.getData();
-                        mBtnAddImage.setImageURI(mImageUri);
+                        handleResult();
                     }
                     break;
                 case REQUEST_SPEECH_INPUT:
@@ -218,6 +226,16 @@ public class ObjectActivity extends AppCompatActivity {
             }
         } else if (resultCode == RESULT_CANCELED) {
             Toast.makeText(this, getString(R.string.cancelled), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void handleResult() {
+        try {
+            Bitmap bitmap = PhotoUtil.setPic(this, mImageUri);
+            mImage = PhotoUtil.getBytesFromBitmap(bitmap);
+            mBtnAddImage.setImageBitmap(PhotoUtil.getBitmapFromBytes(mImage));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -236,7 +254,15 @@ public class ObjectActivity extends AppCompatActivity {
         }
     }
 
+    private void closeKeyboard() {
+        if (getCurrentFocus() != null) {
+            InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
     private void actionDone() {
+        closeKeyboard();
         mNameWrapper.setError("");
 
         String name = mEditName.getText().toString().trim();
@@ -255,15 +281,13 @@ public class ObjectActivity extends AppCompatActivity {
     }
 
     // Metodo che permette di salvare un nuovo oggetto
-    private void saveObject(String name, String description) {
+    private void saveObject(final String name, String description) {
         mProgressBar.setVisibility(View.VISIBLE);
-
         DocumentReference docRef = FirebaseFirestore.getInstance()
                 .collection(Constants.OBJECTS)
                 .document();
-        String id = docRef.getId();
+        final String id = docRef.getId();
 
-        updloadImage(id);
         Object object = new Object(id, idRoom, name, (id + "." + getFileExtension()), description);
         docRef
                 .set(object)
@@ -272,8 +296,7 @@ public class ObjectActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         mProgressBar.setVisibility(View.GONE);
                         Log.d(TAG, "Object saved");
-                        Toast.makeText(ObjectActivity.this, getString(R.string.object_successfully_saved), Toast.LENGTH_SHORT).show();
-                        onBackPressed();
+                        updloadImage(id);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -295,7 +318,6 @@ public class ObjectActivity extends AppCompatActivity {
         hashMap.put(Constants.IMAGE, (mObject.getId() + "." + getFileExtension()));
         hashMap.put(Constants.DESCRIPTION, description);
 
-        updloadImage(mObject.getId());
         FirebaseFirestore.getInstance()
                 .collection(Constants.OBJECTS)
                 .document(mObject.getId())
@@ -305,8 +327,7 @@ public class ObjectActivity extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         mProgressBar.setVisibility(View.GONE);
                         Log.d(TAG, "Object updated");
-                        Toast.makeText(ObjectActivity.this, getString(R.string.object_successfully_updated), Toast.LENGTH_SHORT).show();
-                        onBackPressed();
+                        updloadImage(mObject.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -327,25 +348,31 @@ public class ObjectActivity extends AppCompatActivity {
 
     // Metodo che permette di salvare un'immagine
     private void updloadImage(String id) {
-        if (mImageUri != null) {
+        mProgressBar.setVisibility(View.VISIBLE);
+        if (mImage != null) {
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.UPLOADS);
             StorageReference fileReference = storageReference.child(id + "." + getFileExtension());
-
             fileReference
-                    .putFile(mImageUri)
+                    .putBytes(mImage)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            mProgressBar.setVisibility(View.GONE);
                             Log.d(TAG, "Image uploaded");
+                            Toast.makeText(ObjectActivity.this, getString(R.string.object_successfully_saved), Toast.LENGTH_SHORT).show();
+                            onBackPressed();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "Error uploading image", e);
+                            mProgressBar.setVisibility(View.GONE);
+                            Log.w(TAG, "Error uploading image", e);
                             Toast.makeText(ObjectActivity.this, getString(R.string.error_message_uploading_image), Toast.LENGTH_SHORT).show();
                         }
                     });
+        } else {
+            onBackPressed();
         }
     }
 
@@ -411,5 +438,11 @@ public class ObjectActivity extends AppCompatActivity {
                 updateImageButton();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mProgressBar.setVisibility(View.GONE);
     }
 }

@@ -1,13 +1,9 @@
 package it.uniupo.museumguide.util;
 
-import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,7 +14,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import it.uniupo.museumguide.R;
 import it.uniupo.museumguide.models.Object;
 import it.uniupo.museumguide.models.Room;
 
@@ -125,7 +120,7 @@ public class FirebaseUtil {
 
     // Metodo che permette di eliminare un'immagine
     public static void deleteImage(String image) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("uploads");
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.UPLOADS);
         storageReference
                 .child(image)
                 .delete()
@@ -144,18 +139,9 @@ public class FirebaseUtil {
     }
 
     public static Task<Uri> downloadImage(String image) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference("uploads");
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.UPLOADS);
         return storageReference
                 .child(image)
                 .getDownloadUrl();
-    }
-
-    public static void updateImageView(Context context, Uri uri, ImageView imageView) {
-        Glide
-                .with(context)
-                .load(uri)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.placeholder)
-                .into(imageView);
     }
 }

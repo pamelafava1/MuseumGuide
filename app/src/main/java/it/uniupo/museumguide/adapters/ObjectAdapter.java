@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -18,6 +19,7 @@ import java.util.List;
 import it.uniupo.museumguide.R;
 import it.uniupo.museumguide.models.Object;
 import it.uniupo.museumguide.util.FirebaseUtil;
+import it.uniupo.museumguide.util.PhotoUtil;
 
 public class ObjectAdapter extends ArrayAdapter<Object> {
 
@@ -50,7 +52,7 @@ public class ObjectAdapter extends ArrayAdapter<Object> {
                     .addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {
-                            FirebaseUtil.updateImageView(mContext, uri, holder.image);
+                            PhotoUtil.updateImageView(mContext, uri, holder.image, holder.progressBar);
                         }
                     });
         }
@@ -66,10 +68,12 @@ public class ObjectAdapter extends ArrayAdapter<Object> {
     public class ViewHolder {
         TextView name;
         ImageView image;
+        ProgressBar progressBar;
 
         ViewHolder(View view) {
             name = view.findViewById(R.id.object_name);
             image = view.findViewById(R.id.object_image);
+            progressBar = view.findViewById(R.id.progress_bar);
         }
     }
 }

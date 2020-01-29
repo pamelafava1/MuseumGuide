@@ -26,6 +26,7 @@ import java.util.Locale;
 import it.uniupo.museumguide.models.Object;
 import it.uniupo.museumguide.util.Constants;
 import it.uniupo.museumguide.util.FirebaseUtil;
+import it.uniupo.museumguide.util.PhotoUtil;
 
 public class ObjectDetailsActivity extends AppCompatActivity implements TextToSpeech.OnInitListener{
 
@@ -94,7 +95,7 @@ public class ObjectDetailsActivity extends AppCompatActivity implements TextToSp
                         mProgressBar.setVisibility(View.GONE);
                         Log.d(TAG, "Image downloaded");
                         mImageUri = uri;
-                        FirebaseUtil.updateImageView(ObjectDetailsActivity.this, mImageUri, mImageView);
+                        PhotoUtil.updateImageView(ObjectDetailsActivity.this, mImageUri, mImageView, mProgressBar);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -154,7 +155,7 @@ public class ObjectDetailsActivity extends AppCompatActivity implements TextToSp
         if (savedInstanceState != null) {
             mImageUri = savedInstanceState.getParcelable(Constants.IMAGE_URI);
             if (mImageUri != null) {
-                FirebaseUtil.updateImageView(this, mImageUri, mImageView);
+                PhotoUtil.updateImageView(this, mImageUri, mImageView, mProgressBar);
             }
         }
     }
