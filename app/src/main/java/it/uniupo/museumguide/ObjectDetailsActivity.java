@@ -58,7 +58,7 @@ public class ObjectDetailsActivity extends AppCompatActivity implements TextToSp
         if (getIntent().hasExtra(Constants.OBJECT)) {
             mObject = getIntent().getParcelableExtra(Constants.OBJECT);
             if (!TextUtils.isEmpty(mObject.getDescription())) {
-                String description = getString(R.string.description) + "\n" + mObject.getDescription();
+                String description = mObject.getDescription();
                 mTextDescription.setText(description);
             } else {
                 mTextDescription.setText(getString(R.string.no_description_available));

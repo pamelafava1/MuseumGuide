@@ -315,7 +315,9 @@ public class ObjectActivity extends AppCompatActivity {
 
         HashMap<String, java.lang.Object> hashMap = new HashMap<>();
         hashMap.put(Constants.NAME, name);
-        hashMap.put(Constants.IMAGE, (mObject.getId() + "." + getFileExtension()));
+        if (mImage != null) {
+            hashMap.put(Constants.IMAGE, (mObject.getId() + "." + getFileExtension()));
+        }
         hashMap.put(Constants.DESCRIPTION, description);
 
         FirebaseFirestore.getInstance()
@@ -348,8 +350,8 @@ public class ObjectActivity extends AppCompatActivity {
 
     // Metodo che permette di salvare un'immagine
     private void updloadImage(String id) {
-        mProgressBar.setVisibility(View.VISIBLE);
         if (mImage != null) {
+            mProgressBar.setVisibility(View.VISIBLE);
             StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.UPLOADS);
             StorageReference fileReference = storageReference.child(id + "." + getFileExtension());
             fileReference
