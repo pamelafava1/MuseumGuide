@@ -148,7 +148,7 @@ public class RoomActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-        if (getIntent().hasExtra(Constants.ROOM)) {
+        if (!getIntent().hasExtra(Constants.ROOM)) {
             MenuItem actionDelete = menu.findItem(R.id.action_delete);
             actionDelete.setVisible(false);
         }
