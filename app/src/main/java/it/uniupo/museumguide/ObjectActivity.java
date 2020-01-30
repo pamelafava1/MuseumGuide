@@ -127,6 +127,9 @@ public class ObjectActivity extends AppCompatActivity {
 
     private void downloadImage() {
         Task<Uri> uriTask = FirebaseUtil.downloadImage(mObject.getImage());
+        if (uriTask == null) {
+            return;
+        }
         uriTask
                 .addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override

@@ -120,28 +120,33 @@ public class FirebaseUtil {
 
     // Metodo che permette di eliminare un'immagine
     public static void deleteImage(String image) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.UPLOADS);
-        storageReference
-                .child(image)
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Image deleted");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error deleting image", e);
-                    }
-                });
+        if (image != null) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.UPLOADS);
+            storageReference
+                    .child(image)
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d(TAG, "Image deleted");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w(TAG, "Error deleting image", e);
+                        }
+                    });
+        }
     }
 
     public static Task<Uri> downloadImage(String image) {
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.UPLOADS);
-        return storageReference
-                .child(image)
-                .getDownloadUrl();
+        if (image != null) {
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference(Constants.UPLOADS);
+            return storageReference
+                    .child(image)
+                    .getDownloadUrl();
+        }
+        return null;
     }
 }

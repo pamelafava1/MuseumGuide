@@ -33,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:textColor="@color/text_color"
+                android:scrollbars="vertical"
                 android:textSize="@dimen/text_size" />
 
             <LinearLayout

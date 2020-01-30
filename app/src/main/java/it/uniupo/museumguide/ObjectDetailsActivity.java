@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +54,8 @@ public class ObjectDetailsActivity extends AppCompatActivity implements TextToSp
         mBtnSpeech = findViewById(R.id.btn_speech);
         mBtnBack = findViewById(R.id.btn_back);
         mProgressBar = findViewById(R.id.progress_bar);
+
+        mTextDescription.setMovementMethod(new ScrollingMovementMethod());
 
         idRoom = getIntent().getStringExtra(Constants.ID_ROOM);
         if (getIntent().hasExtra(Constants.OBJECT)) {

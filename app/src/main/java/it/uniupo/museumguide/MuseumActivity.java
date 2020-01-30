@@ -206,29 +206,13 @@ public class MuseumActivity extends AppCompatActivity {
         TimePickerDialog openingTimePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                final int openHour = hourOfDay;
-                final int openMinute = minute;
                 String openingTime = String.format(Locale.getDefault(),"%02d:%02d", hourOfDay, minute);
                 textView.setText(openingTime);
                 final TimePickerDialog closingTimePickerDialog = new TimePickerDialog(MuseumActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        boolean isBefore = false;
-                        if(hour < openHour) {
-                            isBefore = true;
-                        }
-                        else if(hourOfDay == openHour) {
-                            if(minute < openMinute) {
-                                isBefore = true;
-                            }
-                        }
-                        if (isBefore) {
-                            clearDay(checkBox, textView);
-                            Toast.makeText(MuseumActivity.this, getString(R.string.time_error_message), Toast.LENGTH_SHORT).show();
-                        } else {
-                            String closingTime = String.format(Locale.getDefault(),"%02d:%02d", hourOfDay, minute);
-                            textView.append("-" + closingTime);
-                        }
+                        String closingTime = String.format(Locale.getDefault(),"%02d:%02d", hourOfDay, minute);
+                        textView.append("-" + closingTime);
                     }
                 }, hourOfDay, minute, true);
                 closingTimePickerDialog.setMessage(getString(R.string.closing_time));
