@@ -201,18 +201,34 @@ public class MuseumActivity extends AppCompatActivity {
     // Se una delle due finestre di dialogo viene chiusa si toglie il check dal CheckBox e si rimuove l'orario dalla TextView
     public void showTimePicker(final CheckBox checkBox, final TextView textView) {
         final Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        final int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
         TimePickerDialog openingTimePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                final int openHour = hourOfDay;
+                final int openMinute = minute;
                 String openingTime = String.format(Locale.getDefault(),"%02d:%02d", hourOfDay, minute);
                 textView.setText(openingTime);
                 final TimePickerDialog closingTimePickerDialog = new TimePickerDialog(MuseumActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        String closingTime = String.format(Locale.getDefault(),"%02d:%02d", hourOfDay, minute);
-                        textView.append("-" + closingTime);
+                        boolean isBefore = false;
+                        if(hour < openHour) {
+                            isBefore = true;
+                        }
+                        else if(hourOfDay == openHour) {
+                            if(minute < openMinute) {
+                                isBefore = true;
+                            }
+                        }
+                        if (isBefore) {
+                            clearDay(checkBox, textView);
+                            Toast.makeText(MuseumActivity.this, getString(R.string.time_error_message), Toast.LENGTH_SHORT).show();
+                        } else {
+                            String closingTime = String.format(Locale.getDefault(),"%02d:%02d", hourOfDay, minute);
+                            textView.append("-" + closingTime);
+                        }
                     }
                 }, hourOfDay, minute, true);
                 closingTimePickerDialog.setMessage(getString(R.string.closing_time));
@@ -221,8 +237,7 @@ public class MuseumActivity extends AppCompatActivity {
                 closingTimePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                     @Override
                     public void onCancel(DialogInterface dialog) {
-                        checkBox.setChecked(false);
-                        textView.setText("");
+                        clearDay(checkBox, textView);
                         dialog.cancel();
                     }
                 });
@@ -234,11 +249,15 @@ public class MuseumActivity extends AppCompatActivity {
         openingTimePickerDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                checkBox.setChecked(false);
-                textView.setText("");
+                clearDay(checkBox, textView);
                 dialog.cancel();
             }
         });
+    }
+
+    private void clearDay(CheckBox checkBox, TextView textView) {
+        checkBox.setChecked(false);
+        textView.setText("");
     }
 
     // Metodo che permette di impostare gli orari di apertura e chiusura del museo

@@ -51,6 +51,7 @@
     <string name="museum_open">Museo aperto</string>
     <string name="museum_image">Immagine del museo</string>
     <string name="museum_name"><b>Nome del museo:</b></string>
+    <string name="time_error_message">L\'orario di chiusura precede l\'orario di apertura</string>
     <string name="museum_successfully_updated">Museo aggiornato con successo</string>
     <string name="museum_successfully_saved">Museo salvato con successo</string>
     <string name="name_empty_error_message">È richiesto un nome</string>

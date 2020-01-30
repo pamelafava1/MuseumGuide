@@ -40,6 +40,7 @@
     <string name="hint_museum_name">Add museum name</string>
     <string name="hint_object_name">Add object name</string>
     <string name="hint_password">Password</string>
+    <string name="time_error_message">The closing time precedes the opening time</string>
     <string name="hint_room_name">Add room name</string>
     <string name="location_empty_error_message">A location is required.</string>
     <string name="log_in">Log In</string>
