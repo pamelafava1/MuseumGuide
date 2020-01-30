@@ -24,6 +24,7 @@
                 android:layout_height="400dp"
                 android:layout_gravity="center_vertical"
                 android:contentDescription="@string/object_image"
+                android:src="@drawable/camera"
                 android:scaleType="centerCrop" />
 
             <LinearLayout

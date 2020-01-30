@@ -288,7 +288,11 @@ public class ObjectActivity extends AppCompatActivity {
                 .document();
         final String id = docRef.getId();
 
-        Object object = new Object(id, idRoom, name, (id + "." + getFileExtension()), description);
+        String image = null;
+        if (mImage != null) {
+            image = (id + "." + getFileExtension());
+        }
+        Object object = new Object(id, idRoom, name, image, description);
         docRef
                 .set(object)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
